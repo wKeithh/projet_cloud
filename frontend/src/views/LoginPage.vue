@@ -34,8 +34,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import api from '@/services/api'; // '@' fait référence au dossier src
 export default {
   data() {
     return {
@@ -47,7 +46,7 @@ export default {
     login() {
       console.log('Tentative de connexion', this.username, this.password);
 
-      axios.post('http://127.0.0.1:8000/api/login/', {
+      api.post("api/login/", {
         username: this.username,
         password: this.password
       }, {

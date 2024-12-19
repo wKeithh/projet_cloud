@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from '@/services/api'; // '@' fait référence au dossier src
 
 export default {
   data() {
@@ -113,7 +113,7 @@ export default {
   methods: {
     async fetchDocuments() {
       try {
-        const response = await axios.get("api/documents/");
+        const response = await api.get("api/documents/");
         this.documents = response.data;
       } catch (error) {
         alert("Échec du chargement des documents");
@@ -121,7 +121,7 @@ export default {
     },
     async createDocument() {
       try {
-        const response = await axios.post("api/documents/", {
+        const response = await api.post("api/documents/", {
           title: "Nouveau Document",
           owner: "Utilisateur actuel",
           created_at: new Date().toISOString(),
@@ -138,7 +138,7 @@ export default {
     },
     async saveDocument() {
       try {
-        await axios.put(`api/documents/${this.currentDocument.id}/`, {
+        await api.put(`api/documents/${this.currentDocument.id}/`, {
           title: this.currentDocument.title,
           content: this.currentDocument.content,
         });
@@ -154,7 +154,7 @@ export default {
     },
     async deleteDocument(id) {
       try {
-        await axios.delete(`api/documents/${id}/`);
+        await api.delete(`api/documents/${id}/`);
         this.documents = this.documents.filter((doc) => doc.id !== id);
         alert("Document supprimé !");
         if (this.currentDocument?.id === id) {
@@ -174,7 +174,7 @@ export default {
     logout() {
       console.log("Tentative de déconnexion");
 
-      axios.post('http://127.0.0.1:8000/api/logout/', {}, {
+      api.post('http://127.0.0.1:8000/api/logout/', {}, {
         withCredentials: true
       })
       .then(response => {
